@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Depositar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<!--NAVBAR-->
+<nav class="navbar bg-body-tertiary">
+  <form class="container-fluid justify-content-start">
+    <a class="btn btn-sm btn-outline-secondary me-2" href="menu.html">Menu</a>
+    <button class="btn btn-outline-success me-2" type="button">Depositar</button>
+    <a class="btn btn-sm btn-outline-secondary me-2" href="sendmoney.html">Enviar Dinero</a>
+    <a class="btn btn-sm btn-outline-secondary me-2" href="transactions.html">Últimos Movimientos</a>
+  </form>
+</nav>
+<!--FIN NAVBAR-->
+
+<!--MENU-->
+<div class="container bg-info-subtle my-5">
+  <h2 class="mb-4 mb-5 text-center">Saldo Actual:</h2>
+  <div class=" row aling-items-center justify-content-center mb-4">
+    <p class="text-center h3" id="saldo"></p>
+  </div>
+  <hr>
+  <h2 class="mb-4 text-center">Depositar</h2>
+  <div class="row align-items-center justify-content-center mb-4">
+    <div class="col-12 col-md-4 text-md-end mb-2 mb-md-0">
+      <p id="msgInfo"></p>
+      <label for="monto" class="h5 mb-0">
+        Monto a depositar:
+      </label>
+    </div>
+    <div class="col-12 col-md-3 mb-2 mb-md-0">
+      <input
+        type="number"
+        id="monto"
+        value=0
+        class="form-control"
+      />
+    </div>
+    <div class="col-12 col-md-2 text-md-start">
+      <button id="btnDepositar" class="btn btn-lg btn-success w-100">
+        Realizar Deposito
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-start me-2 my-2">
+      <button class="btn btn-lg btn-secondary">
+        <a href="menu.html" class="btn btn-secondary">Volver al Menú Principal</a>
+      </button>
+    </div>
+  </div>
+</div>
+<!--FIN MENU-->
+<script src="./assets/js/wallet.js"></script>
+<script src="./assets/js/app3.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Movimientos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<!--NAVBAR-->
+<nav class="navbar bg-body-tertiary">
+  <form class="container-fluid justify-content-start">
+    <a class="btn btn-sm btn-outline-secondary me-2" href="menu.html">Menu</a>
+    <a class="btn btn-sm btn-outline-secondary me-2" href="deposit.html">Depositar</a>
+    <a class="btn btn-sm btn-outline-secondary me-2" href="sendmoney.html">Enviar Dinero</a>
+    <button class="btn btn-outline-success me-2" type="button">Últimos Movimientos</button>
+  </form>
+</nav>
+<!--FIN NAVBAR-->
+
+<!--MENU-->
+<div class="container bg-info-subtle my-5">
+  <h2 class="mb-4 text-center">Menú Movimientos</h2>
+
+
+  <div class="container">
+    <h2>Últimos Movimientos</h2>
+    <ul id="listaMovimientos" class="list-group">
+      <li class="list-group-item">Depósito - $150000 - fecha: 01-01-2026 - 3:45:19 p. m.</li>
+      <li class="list-group-item">Transferencia recibida - $45000 - fecha: 31-12-2025 - 8:35:11 p. m.</li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-12 text-start me-2 my-2">
+      <button class="btn btn-lg btn-secondary">
+        <a href="menu.html" class="btn btn-secondary">Volver al Menú Principal</a>
+      </button>
+    </div>
+  </div>
+</div>
+<!--FIN MENU-->
+<script src="./assets/js/wallet.js"></script>
+<script src="./assets/js/app5.js"></script>
+</body>
+</html>
