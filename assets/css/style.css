@@ -4,6 +4,7 @@
   transition: background-color 0.2s;
 }
 
-.contacto:hover {
-  background-color: #f1f1f1;
+
+.contacto:hover .btn-enviar {
+  display: inline-block !important;
 }

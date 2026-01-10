@@ -21,10 +21,50 @@ function editarSaldo(valor) {
 }
 
 // Movimientos simples
-function ultimoDeposito(monto) {
-  localStorage.setItem("ultimoDeposito", monto);
+const movimientos = [
+  {
+    tipo: "deposito",
+    monto: 150000,
+    fecha: "01-01-2026",
+    hora: "3:45 PM"
+  },
+  {
+    tipo: "transferencia",
+    monto: 45000,
+    fecha: "31-12-2025",
+    hora: "8:35 PM"
+  },
+  {
+    tipo: "compra",
+    monto: 20000,
+    fecha: "30-12-2025",
+    hora: "6:10 PM"
+  }
+];
+
+if (!localStorage.getItem("movimientos")) {
+  localStorage.setItem("movimientos", JSON.stringify(movimientos));
 }
 
-function ultimoEnvio(monto) {
-  localStorage.setItem("ultimoEnvio", monto);
+function registrarDeposito(monto) {
+  movimientos.unshift({
+    tipo: "deposito",
+    monto: monto,
+    fecha: new Date().toLocaleDateString(),
+    hora: new Date().toLocaleTimeString()
+  });
+
+  localStorage.setItem("movimientos", JSON.stringify(movimientos));
+}
+
+
+function registrarTransferencia(monto) {
+  movimientos.unshift({
+    tipo: "transferencia",
+    monto: monto,
+    fecha: new Date().toLocaleDateString(),
+    hora: new Date().toLocaleTimeString()
+  });
+
+  localStorage.setItem("movimientos", JSON.stringify(movimientos));
 }

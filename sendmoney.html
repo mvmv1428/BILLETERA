@@ -157,20 +157,27 @@
       <div class="contact-info">
         <span class="contact-name" >John Doe</span>
         <span class="contact-details">RUT: 12345678-9, Alias: john.doe, Banco: BCI, Cuenta :0000342234</span>
+        <button class="btn btn-sm btn-primary btn-enviar ms-3 d-none">Enviar</button>
       </div>
     </li>
     <li class="list-group-item contacto" data-nombre="Jane Smith">
       <div class="contact-info">
         <span class="contact-name" >Jane Smith</span>
         <span class="contact-details">Rut: 98765432-1, Alias: jane.smith, Banco: Falabella, Cuenta :000023192813</span>
+        <button class="btn btn-sm btn-primary btn-enviar ms-3 d-none">Enviar</button>
       </div>
     </li>
     <li class="list-group-item contacto"  data-nombre="Ricardo Villalobos">
       <div class="contact-info">
         <span class="contact-name">Ricardo Villalobos</span>
         <span class="contact-details">Rut: 1111111-1, Alias: ricardo, Banco: Falabella, Cuenta :000063692615</span>
+        <button class="btn btn-sm btn-primary btn-enviar ms-3 d-none">Enviar</button>
       </div>
     </li>
+    <li id="noEncontrado" class="list-group-item text-center text-muted d-none">
+        Contacto no encontrado
+    </li>
+
   </ul>
   <hr>
       <button id="btnenvio2" class="btn btn-primary my-2">Transferir Directo</button>
@@ -186,7 +193,9 @@
   </div>
 </div>
 <!--FIN MENU-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- jQuery CDN (recomendado) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./assets/js/wallet.js"></script>
 <script src="./assets/js/app4.js"></script>
 </body>

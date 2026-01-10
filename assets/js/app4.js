@@ -1,157 +1,194 @@
+// Proyecto Wallet
+$(document).ready(function () {
 
-//Proyecto Wallet
+  // Botones
+  const $btnConfirmarEnvio = $("#btnConfirmarEnvio");
+  const $btnenvio2 = $("#btnenvio2");
+
+  // Forms
+  const $formContacto = $("#formContacto");
+  const $formEnvio = $("#formEnvio");
+  const $listaContactos = $("#contactList");
+
+  // Inputs
+  const $nombre = $("#nombre");
+  const $banco = $("#banco");
+  const $cuenta = $("#cuenta");
+  const $rut = $("#rut");
+  const $alias = $("#alias");
+  const $montoEnviar = $("#montoEnviar");
+
+  // Mensajes
+  const $msgInfo = $("#msgInfo");
+  const $msgInfo2 = $("#msgInfo2");
+  const $msgEnviar = $("#msgEnviar");
+  const $saldo = $("#saldo");
+
+  // SALDO INICIAL
+  let saldoInicial = saldoActual();
+  $saldo.text(`$${saldoInicial}`);
+
+  // AGREGAR CONTACTO
+  function agregarContacto(nombre, rut, alias, banco, cuenta) {
+    const $li = $("<li>")
+      .addClass("list-group-item contacto")
+      .attr("data-nombre", nombre);
+
+    const $div = $("<div>").addClass("contact-info");
+
+    const $spanNombre = $("<span>")
+      .addClass("contact-name")
+      .text(nombre);
+
+    const $spanDetalles = $("<span>")
+      .addClass("contact-details")
+      .text(` RUT: ${rut}, Alias: ${alias}, Banco: ${banco}, Cuenta: ${cuenta}`);
+
+    const $botonEnvia = $("<button>")
+      .addClass("btn btn-sm btn-primary btn-enviar ms-3 d-none")
+      .text("Enviar");
 
 
-//Capturar los elementos del DOM (HTML)
+    $div.append($spanNombre, $spanDetalles);
+    $li.append($div);
+    $div.append($botonEnvia);
+    $listaContactos.append($li);
+  }
 
-//Botones
-const btnConfirmarEnvio = document.getElementById("btnConfirmarEnvio")
-const btnenvio2 = document.getElementById("btnenvio2")
+  // FORM CONTACTO
+  $formContacto.submit(function (e) {
+    e.preventDefault();
 
-//Forms
-const formContacto = document.getElementById("formContacto")
-const formEnvio = document.getElementById("formEnvio")
-const listaContactos = document.getElementById("contactList")
-//Inputs
-const monto = document.getElementById("monto")
-const nombre = document.getElementById("nombre")
-const banco = document.getElementById("banco")
-const cuenta = document.getElementById("cuenta")
-const rut = document.getElementById("rut")
-const alias = document.getElementById("alias")
-const montoEnviar = document.getElementById("montoEnviar")
+    if (
+      $nombre.val() &&
+      $cuenta.val() &&
+      $rut.val() &&
+      $banco.val()
+    ) {
+      $msgInfo.text("Datos ingresados! Contacto guardado");
 
-//Mensajes
-const msgInfo = document.getElementById("msgInfo")
-const msgInfo2 = document.getElementById("msgInfo2")
-const msgEnviar = document.getElementById("msgEnviar")
-const saldo = document.getElementById("saldo")
+      agregarContacto(
+        $nombre.val(),
+        $rut.val(),
+        $alias.val(),
+        $banco.val(),
+        $cuenta.val()
+      );
 
-//Funciones Depositar
+      const modal = bootstrap.Modal.getInstance($("#exampleModal")[0]);
+      modal.hide();
 
-//Saldo Inicial
-let saldoInicial = saldoActual();
-saldo.textContent = `$${saldoInicial}`;
-
-//Funciones 
-function agregarContacto(nombre, rut, alias, banco, cuenta) {
-  const li = document.createElement("li");
-  li.className = "list-group-item contacto";
-  li.dataset.nombre = nombre;
-  const div = document.createElement("div");
-  div.className = "contact-info";
-  
-
-  const spanNombre = document.createElement("span");
-  spanNombre.className = "contact-name";
-  spanNombre.textContent = nombre;
-
-  const spanDetalles = document.createElement("span");
-  spanDetalles.className = "contact-details";
-  spanDetalles.textContent =
-    ` RUT: ${rut}, Alias: ${alias}, Banco: ${banco}, Cuenta: ${cuenta}`;
-
-  div.appendChild(spanNombre);
-  div.appendChild(spanDetalles);
-  li.appendChild(div);
-
-  listaContactos.appendChild(li);
-}
-
-//Form Contacto
-formContacto.addEventListener("submit", (e) => {
-    e.preventDefault()
-    if(nombre.value != '' && cuenta.value != '' && rut.value != '' && banco.value != ''){
-        msgInfo.textContent = "Datos ingresados! Contacto Guardado"
-        agregarContacto(nombre.value,rut.value,alias.value,banco.value,cuenta.value)
-    const modalElement = document.getElementById("exampleModal");
-    const modal = bootstrap.Modal.getInstance(modalElement);
-    modal.hide();
-
-    // Limpiar formulario
-    formContacto.reset();
-    msgInfo.textContent = "";
-        return;
+      this.reset();
+      $msgInfo.text("");
+    } else {
+      $msgInfo.text("Revisa los datos ingresados!");
     }
-    else{
-        msgInfo.textContent = "Revisa Los datos ingresados!"
-    }
-
-})
-
-//Funcion Modal
-let contactoActual = "";
-
-const contactos = document.querySelectorAll(".contacto");
-const modal = new bootstrap.Modal(
-  document.getElementById("modalEnviar")
-);
-
-contactos.forEach(contacto => {
-  contacto.addEventListener("click", () => {
-    contactoActual = contacto.dataset.nombre;
-
-    document.getElementById("contactoSeleccionado").textContent =
-      contactoActual;
-
-    document.getElementById("montoEnviar").value = "";
-    document.getElementById("msgEnviar").textContent = "";
-
-    modal.show();
   });
-});
 
-//Funcion Boto Enviar 1
-btnConfirmarEnvio.addEventListener("click", ()=> {
-    const monto = Number(montoEnviar.value);
-    if(monto <= 0){
-      msgEnviar.textContent = "Monto inválido";
+  // =========================
+  // MODAL ENVIAR (CONTACTOS)
+  // =========================
+  let contactoActual = "";
+  const modalEnviar = new bootstrap.Modal($("#modalEnviar")[0]);
+
+  
+  $listaContactos.on("click", ".contacto", function () {
+    contactoActual = $(this).data("nombre");
+
+    $("#contactoSeleccionado").text(contactoActual);
+    $montoEnviar.val("");
+    $msgEnviar.text("");
+
+    modalEnviar.show();
+  });
+
+  // =========================
+  // CONFIRMAR ENVÍO (MODAL 1)
+  // =========================
+  $btnConfirmarEnvio.click(function () {
+    const monto = Number($montoEnviar.val());
+
+    if (monto <= 0) {
+      $msgEnviar.text("Monto inválido");
       return;
     }
+
     if (monto > saldoActual()) {
-      msgEnviar.textContent = "Saldo insuficiente";
-    return;
+      $msgEnviar.text("Saldo insuficiente");
+      return;
     }
-  editarSaldo(saldoActual() - monto);
-  msgEnviar.textContent = "Transferencia realizada";
-  ultimoEnvio(monto);
-  setTimeout(()=>{window.location.reload();},2000)
-  
 
-})
+    editarSaldo(saldoActual() - monto);
+    registrarTransferencia(monto);
 
-//Funcion boton Enviar 2
+    $msgEnviar.text("Transferencia realizada");
 
-const modal2 = new bootstrap.Modal(
-  document.getElementById("modalenvios")
-);
-btnenvio2.addEventListener("click", ()=>{
-    modal2.show();
-})
-formEnvio.addEventListener("submit", (e)=>{
-    e.preventDefault()
-         const monto2 = Number(montoEnviar2.value);
-    if(nombre2.value != '' && cuenta2.value != '' && rut2.value != '' && banco2.value != '' && monto2 > 0){
-        msgInfo2.textContent = "Transferencia realizada"
-          ultimoEnvio(monto2);
-  setTimeout(()=>{
-    window.location.reload();
-    modal2.hide();},2000)
+    setTimeout(() => location.reload(), 2000);
+  });
 
+  // =========================
+  // MODAL ENVÍO MANUAL (2)
+  // =========================
+  const modalEnvios = new bootstrap.Modal($("#modalenvios")[0]);
 
-    if (monto2 > saldoActual()) {
-      msgInfo2.textContent = "Saldo insuficiente";
-    return;
-    }
-  editarSaldo(saldoActual() - monto2);
+  $btnenvio2.click(function () {
+    modalEnvios.show();
+  });
 
+  $formEnvio.submit(function (e) {
+    e.preventDefault();
 
-    // Limpiar formulario
-    formEnvio.reset();
+    const monto2 = Number($("#montoEnviar2").val());
+
+    if (
+      $("#nombre2").val() &&
+      $("#cuenta2").val() &&
+      $("#rut2").val() &&
+      $("#banco2").val() &&
+      monto2 > 0
+    ) {
+      if (monto2 > saldoActual()) {
+        $msgInfo2.text("Saldo insuficiente");
         return;
-    }
-    else{
-        msgInfo2.textContent = "Revisa Los datos ingresados!"
-    }
+      }
 
-})
+      editarSaldo(saldoActual() - monto2);
+      registrarTransferencia(monto2);
+
+      $msgInfo2.text("Transferencia realizada");
+
+      setTimeout(() => {
+        modalEnvios.hide();
+        location.reload();
+      }, 2000);
+
+      this.reset();
+    } else {
+      $msgInfo2.text("Revisa los datos ingresados!");
+    }
+  });
+
+  $("#buscar").on("keyup", function () {
+    let texto = $(this).val().toLowerCase();
+    let encontrados = 0;
+
+    $("#contactList .contacto").each(function () {
+      let nombre = $(this).text().toLowerCase();
+
+      if (nombre.includes(texto)) {
+        $(this).show();
+        encontrados++;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    // Mostrar / ocultar mensaje "no encontrado"
+    if (encontrados === 0 && texto !== "") {
+      $("#noEncontrado").removeClass("d-none");
+    } else {
+      $("#noEncontrado").addClass("d-none");
+    }
+  });
+
+});

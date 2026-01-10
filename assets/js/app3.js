@@ -1,37 +1,51 @@
+// Proyecto Wallet
+$(document).ready(function () {
 
-//Proyecto Wallet
+  const toast = new bootstrap.Toast(
+  document.getElementById('toastLeyenda'),
+  { delay: 4000 }
+);
 
+  // Capturar elementos del DOM
+  const $btnDepositar = $("#btnDepositar");
+  const $monto = $("#monto");
+  const $msgInfo = $("#msgInfo");
+  const $saldo = $("#saldo");
 
-//Capturar los elementos del DOM (HTML)
+  // Saldo inicial
+  let saldoInicial = saldoActual();
+  $saldo.text(`$${saldoInicial}`);
 
-//Botones
-const btnDepositar = document.getElementById("btnDepositar")
-//Inputs
-const monto = document.getElementById("monto")
-//Mensajes
-const msgInfo = document.getElementById("msgInfo")
-const saldo = document.getElementById("saldo")
+  // Evento Depositar
+  $btnDepositar.click(function () {
 
-//Funciones Depositar
+    const montoValor = $monto.val().trim();
+    const montoNum = Number(montoValor);
 
-//Saldo Inicial
-let saldoInicial = saldoActual();
-saldo.textContent = `$${saldoInicial}`;
+    if (montoNum > 0) {
+      const saldoTotal = saldoInicial + montoNum;
 
-btnDepositar.addEventListener("click", () => {
-    montoValor = monto.value.trim();
-    montoNum = Number(montoValor);
-    if (montoNum > 0){
-        const saldoTotal = saldoInicial + montoNum;
-        saldo.textContent = `$${saldoTotal}`;
-        editarSaldo(saldoTotal);
-        ultimoDeposito(montoValor);
-        monto.value = 0
-        msgInfo.textContent = `Deposito Exitoso monto depositado $${montoValor}`
+      $saldo.text(`$${saldoTotal}`);
+      editarSaldo(saldoTotal);
+      registrarDeposito(montoValor);
+
+      saldoInicial = saldoTotal; 
+      $monto.val(0);
+
+      $msgInfo
+        .text(`Depósito exitoso. Monto depositado $${montoValor}`)
+        .removeClass("text-danger")
+        .addClass("text-success");
+      $("#toastMsg").text("Redirigiendo a Menu");
+      toast.show();
+      setTimeout(()=>{window.location.href = "menu.html"},3000)
+    } else {
+      $msgInfo
+        .text("No puedes depositar, ingresa un monto válido!")
+        .removeClass("text-success")
+        .addClass("text-danger");
     }
-    else{
-        msgInfo.textContent = "No puedes depositar ingresa un monto!"
-    }
 
-})
+  });
 
+});

@@ -1,34 +1,53 @@
+// Proyecto Wallet
 
-//Proyecto Wallet
-
-
-//Capturar los elementos del DOM (HTML)
-
-const listaMovimientos = document.getElementById("listaMovimientos")
-
-
-//Cargar ultimo deposito
-const ultimoDeposito2 = Number(localStorage.getItem("ultimoDeposito"));
-
-if (ultimoDeposito2 > 0) {
-
-    const li = document.createElement("li");
-    li.classList.add("list-group-item");
-    const fecha = new Date().toLocaleDateString();
-    const hora = new Date().toLocaleTimeString();
-    li.textContent = `Depósito - $${ultimoDeposito2} - fecha: ${fecha} - ${hora}`;
-    listaMovimientos.prepend(li);
-
+function getTipoTransaccion(tipo) {
+  switch (tipo) {
+    case "deposito":
+      return "Depósito";
+    case "compra":
+      return "Compra";
+    case "transferencia":
+      return "Transferencia";
+    default:
+      return "Movimiento";
+  }
 }
 
-//Cargar ultimo envio
-const ultimoEnvio2 = Number(localStorage.getItem("ultimoEnvio"));
-if(ultimoEnvio2 > 0){
-    const li = document.createElement("li");
-    li.classList.add("list-group-item");
-    const fecha = new Date().toLocaleDateString();
-    const hora = new Date().toLocaleTimeString();
-    li.textContent = `Transferencia - $${ultimoEnvio2} - fecha: ${fecha} - ${hora}`;
-    listaMovimientos.prepend(li);
+function mostrarUltimosMovimientos(filtro) {
+  const lista = $("#listaMovimientos");
+  lista.empty();
 
+  const movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+  let encontrados = 0;
+
+  movimientos.forEach(mov => {
+    if (filtro === "todos" || mov.tipo === filtro) {
+      lista.append(`
+        <li class="list-group-item">
+          ${getTipoTransaccion(mov.tipo)} - $${mov.monto}
+          - fecha: ${mov.fecha} - ${mov.hora}
+        </li>
+      `);
+      encontrados++;
+    }
+  });
+
+  if (encontrados === 0) {
+    lista.append(`
+      <li class="list-group-item text-center text-muted">
+        No hay movimientos para este filtro
+      </li>
+    `);
+  }
 }
+
+$(document).ready(function () {
+
+  // Mostrar todos al cargar
+  mostrarUltimosMovimientos("todos");
+
+  $("#filtroMovimientos").on("change", function () {
+    mostrarUltimosMovimientos($(this).val());
+  });
+
+});
